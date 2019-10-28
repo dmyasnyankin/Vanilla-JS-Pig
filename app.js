@@ -13,10 +13,15 @@ var scores, roundScore, activePlayer, dice;
 
 scores = [0, 0];
 roundScore = 0;
-activePlayer = 1;
+activePlayer = 0;
 
 // Use this to not display any dice in beginning of the page until game starts
 document.querySelector('.dice').style.display = 'none';
+
+document.getElementById('score-0').textContent = 0;
+document.getElementById('score-1').textContent = 0;
+document.getElementById('current-0').textContent = 0;
+document.getElementById('current-1').textContent = 0;
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
 
@@ -32,6 +37,25 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
     diceDOM.src = 'dice-' + dice + '.png';
 
     // 3. Update round score if dice rolled NOT 1
+    if (dice !== 1){
+        roundScore += dice;
+        document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    } else {
+        // Switch players and reset round score
+        activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+        roundScore = 0;
+
+        // Set current score of active player to 0 on switch
+        document.getElementById('current-0').textContent = 0;
+        document.getElementById('current-1').textContent = 0;
+
+        // Add the active class to show which player is rolling dice
+        document.querySelector('.player-0-panel').classList.toggle('active');
+        document.querySelector('.player-1-panel').classList.toggle('active');
+
+        // Reset dice on screen upon player switch
+        document.querySelector('.dice').style.display = 'none';
+    }
 
 })
 
